@@ -2,7 +2,11 @@ from twython import Twython, TwythonError, TwythonRateLimitError
 import pymysql
 
 import time, datetime
-import random
+
+# ------------------
+# AUTHOR: 	Spooky
+# VERSION: 	v1.0
+# ------------------
 
 # --- PRIVATE ---
 _DEBUG = False
