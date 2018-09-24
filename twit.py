@@ -16,8 +16,10 @@ def _output(out, force=False):
 
 # --- PUBLIC ---
 def enableDebug():
+	global _DEBUG
 	_DEBUG = True
 def disableDebug():
+	global _DEBUG
 	_DEBUG = False
 
 
