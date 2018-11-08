@@ -5,7 +5,7 @@ import time, datetime
 
 # ------------------
 # AUTHOR: 	Spooky
-# VERSION: 	v1.0
+# VERSION: 	v1.1
 # ------------------
 
 # --- PRIVATE ---
@@ -51,8 +51,25 @@ class Twit:
 		self.DB["CURS"].execute("SELECT twitterID from Whitelist")
 		self.whitelist = [int(x[0]) for x in self.DB["CURS"].fetchall()]
 
-		self.isFollowed = set([int(x) for x in self.TWYTHON["API"].get_friends_ids()["ids"]])	# The isFollowed set ONLY includes people currently being followed
-		self.followers = set([int(x) for x in self.TWYTHON["API"].get_followers_ids()["ids"]])	# People following this account
+		# -- isFollowed and followers --
+		self.isFollowed = set()
+		self.followers = set()
+
+		curs = -1
+		while True:
+			tmp = self.TWYTHON["API"].get_friends_ids(cursor=curs)
+			curs = tmp["next_cursor"]
+			self.isFollowed |= set([int(x) for x in tmp["ids"]])
+			if curs == 0:
+				break
+		curs = -1
+		while True:
+			tmp = self.TWYTHON["API"].get_followers_ids(cursor=curs)
+			curs = tmp["next_cursor"]
+			self.followers |= set([int(x) for x in tmp["ids"]])
+			if curs == 0:
+				break
+		# ------------------------------
 
 		self.exceptions = 0
 
